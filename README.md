@@ -115,21 +115,6 @@ student-hub/
 
 > 📝 The Logic Lab module currently uses the folder name `LogicLab-1.0.2` (kept from upstream to preserve its SW cache version and manifest). A `logic-lab` alias may be introduced in a future release — the integration is identical regardless of folder name.
 
-## 🚀 Quick Start
-
-1. **Open locally** — open `index.html` in any modern browser, or serve the root with any static server (`python3 -m http.server 8000`).
-2. **Try the modules** — click **Portfolio** for profile & projects, or **Logic Lab** for digital-electronics learning.
-3. **Install as PWA** — in Chrome/Edge, an "Install Student Hub" toast appears at the bottom → click **Install**.
-4. **Test offline** — toggle DevTools → Network → Offline, then reload. The hub shell + Portfolio + Logic Lab are all cached locally.
-
-## 🌐 Deploy
-
-### Cloudflare Pages / GitHub Pages / Netlify / Vercel
-
-- **Build command:** *(leave empty)*
-- **Build output:** `/` (root)
-- Service workers require HTTPS — all major static hosts provide it automatically.
-
 ## 🎨 Design Tokens
 
 | Token | Value | Use |
@@ -143,17 +128,6 @@ student-hub/
 | `--radius` | `16px` | Default rounding |
 | `--radius-lg` | `22px` | Card rounding |
 
-## ➕ Adding a New Module
-
-The architecture is fully modular. To add a new module:
-
-1. Create `modules/<your-module>/` with its own `index.html`, `css/`, `js/`, `assets/`, `manifest.json`, `service-worker.js`.
-2. (Optional) Add a `hub-bridge.js` file that injects the Hub shell into every page — see `modules/LogicLab-1.0.2/js/hub-bridge.js` for a working example.
-3. Add a module card in the home page's `modules-grid` section in `index.html`.
-4. Add the entry in the drawer's `<nav class="drawer-body">` (and remove the `disabled` styling for live modules).
-5. Pre-cache the module entry in the hub's `service-worker.js` → `STATIC_ASSETS` list.
-
-That's it — no shell changes required. ECE Toolkit, Python Hub, C Programming Hub, and Student Budget Tracker can all be added this way.
 
 ## 🔗 Hub ↔ Module Integration
 
