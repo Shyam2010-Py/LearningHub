@@ -1,0 +1,27 @@
+{
+  "name": "Ghanashyam Portfolio",
+  "short_name": "Portfolio",
+  "description": "Professional portfolio of Ghanashyam Pabbuleti, Diploma in Electronics & Communication Engineering (ECE) – 2nd Year Student.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "lang": "en",
+  "background_color": "#0B1020",
+  "theme_color": "#00D4FF",
+  "categories": ["portfolio", "education", "productivity"],
+  "icons": [
+    {
+      "src": "assets/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/logo-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

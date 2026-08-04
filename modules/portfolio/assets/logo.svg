@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 56" width="200" height="56" role="img" aria-label="Ghanashyam Pabbuleti">
+    <defs>
+        <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#00D4FF"/>
+            <stop offset="100%" stop-color="#4F46E5"/>
+        </linearGradient>
+    </defs>
+    <rect x="4" y="6" width="44" height="44" rx="10" fill="url(#g)"/>
+    <text x="26" y="38" text-anchor="middle" font-family="Inter, system-ui, sans-serif" font-size="18" font-weight="800" fill="#061021">GP</text>
+    <text x="60" y="28" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="#E5E7EB">Ghanashyam</text>
+    <text x="60" y="46" font-family="Inter, system-ui, sans-serif" font-size="16" font-weight="700" fill="url(#g)">Pabbuleti</text>
+</svg>
