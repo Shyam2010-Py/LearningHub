@@ -4,6 +4,31 @@ All notable changes to **Student Hub** are documented here. The format is based 
 
 ---
 
+## [1.1.2] — 2026-08-04
+
+### 📱 Mobile density pass
+
+- Optimized the **mobile breakpoint only** (`max-width: 768px` / `480px`) to display ~15–20% more content on screen.
+- Reduced root mobile scale by ~15% (`html { font-size: 15px }`).
+- Tightened container max-width, horizontal padding, section spacing (-20%) and hero illustration height (-25%).
+- Reduced module-card padding (24→16px) and border-radius (22→18px); reduced continue-learning card height ~15%.
+- Reduced heading sizes (hero -15%, sections -10%, cards -10%, body -5%).
+- Reduced drawer menu padding and item spacing by 20%.
+- Increased icon-button touch targets to 44×44 px to preserve accessibility.
+- All animations, glassmorphism, gradients, PWA functionality and desktop/tablet layouts remain unchanged.
+
+### 🧠 Dashboard logic fix — Continue Learning is now accurate
+
+- **Continue Learning** now lists **only live modules** with real progress:
+  - Portfolio — 100%
+  - Logic Lab — 8% (new starter value replacing the misleading `0%`)
+- **Removed fake `0%` placeholders** for ECE Toolkit, Python Hub, C Programming Hub, and Student Budget Tracker from the Continue Learning list.
+- **New "Coming Soon" section** introduced right after the Recent Activity / Continue Learning row, listing all four modules that are still under development.
+  - Uses the same `.panel` / `.continue-item` glassmorphism design — no visual identity change.
+  - Items render as non-clickable `<div>` elements with `cursor: not-allowed` and `opacity: 0.7`.
+  - No progress bars are shown for not-yet-released modules (rules respected).
+- Routing, folder structure, animations, gradients, colors, glassmorphism, responsiveness and PWA behavior are all preserved.
+
 ## [1.1.1] — 2026-08-04
 
 ### 🔀 Reordered modules

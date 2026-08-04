@@ -2,7 +2,7 @@
 
 A unified Progressive Web App (PWA) that brings together every student-focused project under one polished interface. Built as the single home for **Ghanashyam Pabbuleti's** portfolio, learning tools, and productivity apps.
 
-![Version](https://img.shields.io/badge/version-1.1.1-blue.svg)
+![Version](https://img.shields.io/badge/version-1.1.2-blue.svg)
 ![PWA](https://img.shields.io/badge/PWA-installable-00E676.svg)
 ![Offline](https://img.shields.io/badge/offline-ready-00D4FF.svg)
 ![License](https://img.shields.io/badge/license-MIT-orange.svg)
@@ -10,9 +10,10 @@ A unified Progressive Web App (PWA) that brings together every student-focused p
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 
-## ✨ What's Inside (v1.1.0)
+## ✨ What's Inside (v1.1.2)
 
-- 🏠 **Modern dashboard home** with welcome, search, six module cards, recent activity, continue learning, quick access, and today's tip
+- 🏠 **Modern dashboard home** with welcome, search, six module cards, recent activity, continue learning, **Coming Soon**, quick access, and today's tip
+- 🧠 **Accurate Continue Learning** — only live modules (Portfolio, Logic Lab) with real progress bars; upcoming modules live in a dedicated **Coming Soon** section
 - 🎨 **Dark theme** with cyan / indigo / green accents, glassmorphism, soft shadows, and smooth animations
 - 🧭 **Sticky top navigation**, hamburger drawer, search, settings, and profile chip
 - 👤 **Portfolio module** (live) — full personal profile, projects, skills, journey, and contact

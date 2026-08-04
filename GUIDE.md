@@ -108,11 +108,14 @@ Sections (in order):
 2. **Drawer** — slide-in from the left; lists Home, Portfolio, and disabled placeholders for future modules.
 3. **Hero** — welcome chip, headline, lead paragraph, hero search, two CTA buttons, and the hero SVG illustration.
 4. **Modules** — six module cards (1 live + 5 "coming soon"). Cards have hover lift, color glow, and a status badge.
-5. **Recent Activity + Continue Learning** — two-column glass panels. Recent activity is dynamic; Continue learning shows progress bars per module.
-6. **Quick Access** — six icon tiles (About, Projects, Skills, Contact, Journey, Ideology), each linking to the corresponding portfolio section.
-7. **Today's Tip** — a single highlighted callout.
-8. **Footer** — 4-column grid: brand, modules, resources, connect; plus a copyright + socials row.
-9. **PWA toasts** — install and update toasts, hidden by default, shown on the appropriate browser event.
+5. **Recent Activity + Continue Learning** — two-column glass panels. Recent activity is dynamic; **Continue Learning lists only live modules** (Portfolio 100%, Logic Lab 8%) with real progress bars.
+6. **Coming Soon** — dedicated section listing every not-yet-released module (ECE Toolkit, Python Hub, C Programming, Student Budget Tracker) in a non-clickable, muted glass panel — no fake progress shown.
+7. **Quick Access** — six icon tiles (About, Projects, Skills, Contact, Journey, Ideology), each linking to the corresponding portfolio section.
+8. **Today's Tip** — a single highlighted callout.
+9. **Footer** — 4-column grid: brand, modules, resources, connect; plus a copyright + socials row.
+10. **PWA toasts** — install and update toasts, hidden by default, shown on the appropriate browser event.
+
+> **Continue Learning vs Coming Soon rule (v1.1.2):** Continue Learning is reserved for modules that are actually implemented and routable. Every other module is surfaced in the dedicated Coming Soon section so users are never shown a fake `0%` progress bar.
 
 ---
 
