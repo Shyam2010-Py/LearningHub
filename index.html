@@ -92,13 +92,13 @@
                 </a>
 
                 <div class="drawer-section-title">Learning</div>
+                <a href="modules/LogicLab-1.0.2/" class="drawer-link" data-match="logic-lab">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
+                    Logic Lab
+                </a>
                 <span class="drawer-link disabled" aria-disabled="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
                     ECE Toolkit <span class="badge-soon">Soon</span>
-                </span>
-                <span class="drawer-link disabled" aria-disabled="true">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
-                    Logic Lab <span class="badge-soon">Soon</span>
                 </span>
                 <span class="drawer-link disabled" aria-disabled="true">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6a3 3 0 0 1 3 3v3h-6V6H9"/><path d="M15 21H9a3 3 0 0 1-3-3v-3h6v3h3"/><path d="M3 9h6M15 15h6"/></svg>
@@ -126,7 +126,7 @@
                 </a>
             </nav>
 
-            <div class="drawer-footer">Student Hub · v1.0.0</div>
+            <div class="drawer-footer">Student Hub · v1.1.1</div>
         </div>
     </aside>
 
@@ -202,26 +202,29 @@
                         </div>
                     </a>
 
-                    <!-- 2. ECE Toolkit -->
+                    <!-- 2. Logic Lab (LIVE) -->
+                    <a href="modules/LogicLab-1.0.2/" class="module-card reveal" data-theme="violet" data-key="logic-lab">
+                        <div class="module-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
+                        </div>
+                        <h3>Logic Lab</h3>
+                        <span class="badge-category">Digital Electronics</span>
+                        <p>Explore logic gates, build digital circuits, run simulations, and test yourself with 100+ quiz questions.</p>
+                        <div class="module-meta">
+                            <span class="status status-live">● Live</span>
+                            <span class="arrow">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </span>
+                        </div>
+                    </a>
+
+                    <!-- 3. ECE Toolkit -->
                     <a href="#modules" class="module-card reveal disabled" data-theme="indigo" data-key="ece-toolkit" aria-disabled="true">
                         <div class="module-icon">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M1 9h3M1 15h3M20 9h3M20 15h3"/></svg>
                         </div>
                         <h3>ECE Toolkit</h3>
                         <p>Calculators, references, and utilities crafted for Electronics & Communication students.</p>
-                        <div class="module-meta">
-                            <span class="status status-soon">Coming soon</span>
-                            <span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17V5M5 12l7 7 7-7"/></svg></span>
-                        </div>
-                    </a>
-
-                    <!-- 3. Logic Lab -->
-                    <a href="#modules" class="module-card reveal disabled" data-theme="violet" data-key="logic-lab" aria-disabled="true">
-                        <div class="module-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
-                        </div>
-                        <h3>Logic Lab</h3>
-                        <p>Explore logic gates, build digital circuits, run simulations and quizzes on the fly.</p>
                         <div class="module-meta">
                             <span class="status status-soon">Coming soon</span>
                             <span class="arrow"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 17V5M5 12l7 7 7-7"/></svg></span>
@@ -292,13 +295,22 @@
                                     <div class="meta">Today · Viewed projects</div>
                                 </div>
                             </a>
+                            <a href="modules/LogicLab-1.0.2/" class="activity-item">
+                                <div class="activity-icon" style="background: rgba(168,85,247,0.1); color: #A855F7;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
+                                </div>
+                                <div class="activity-text">
+                                    <div class="title">Opened Logic Lab</div>
+                                    <div class="meta">Today · Explored gates</div>
+                                </div>
+                            </a>
                             <div class="activity-item">
                                 <div class="activity-icon" style="background: rgba(168,85,247,0.1); color: #A855F7;">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
                                 </div>
                                 <div class="activity-text">
-                                    <div class="title">Updated Student Hub shell</div>
-                                    <div class="meta">Today · v1.0.0 released</div>
+                                    <div class="title">Integrated Logic Lab module</div>
+                                    <div class="meta">Today · v1.1.0 released</div>
                                 </div>
                             </div>
                             <div class="activity-item">
@@ -306,8 +318,8 @@
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
                                 </div>
                                 <div class="activity-text">
-                                    <div class="title">Added 1 module · Portfolio</div>
-                                    <div class="meta">Today · 5 more coming</div>
+                                    <div class="title">Added 2 modules · Portfolio + Logic Lab</div>
+                                    <div class="meta">Today · 4 more coming</div>
                                 </div>
                             </div>
                             <div class="activity-item">
@@ -337,13 +349,21 @@
                                 <div class="title">Explore projects & contact</div>
                                 <div class="progress"><div class="progress-bar" style="width:100%; background:var(--grad-accent);"></div></div>
                             </a>
-                            <div class="continue-item">
+                            <a href="modules/LogicLab-1.0.2/converter.html" class="continue-item">
                                 <div class="head">
                                     <span class="module" style="color:#A855F7;">Logic Lab</span>
                                     <span class="pct">0%</span>
                                 </div>
-                                <div class="title">Digital logic fundamentals</div>
-                                <div class="progress"><div class="progress-bar" style="width:0%;"></div></div>
+                                <div class="title">Number systems & logic gates</div>
+                                <div class="progress"><div class="progress-bar" style="width:0%; background: linear-gradient(135deg,#A855F7,#00D4FF);"></div></div>
+                            </a>
+                            <div class="continue-item" style="opacity:0.6;">
+                                <div class="head">
+                                    <span class="module" style="color:#4F46E5;">ECE Toolkit</span>
+                                    <span class="pct">Soon</span>
+                                </div>
+                                <div class="title">Calculators for ECE students</div>
+                                <div class="progress"><div class="progress-bar" style="width:0%; background: linear-gradient(135deg,#4F46E5,#00D4FF);"></div></div>
                             </div>
                             <div class="continue-item">
                                 <div class="head">
@@ -411,6 +431,18 @@
                         </div>
                         <div class="label">Ideology</div>
                     </a>
+                    <a href="modules/LogicLab-1.0.2/gates.html" class="quick-item">
+                        <div class="icon" style="color:#A855F7;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>
+                        </div>
+                        <div class="label">Logic Gates</div>
+                    </a>
+                    <a href="modules/LogicLab-1.0.2/quiz.html" class="quick-item">
+                        <div class="icon" style="color:#A855F7;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                        </div>
+                        <div class="label">Logic Quiz</div>
+                    </a>
                 </div>
             </div>
         </section>
@@ -452,8 +484,8 @@
                     <h4>Modules</h4>
                     <ul>
                         <li><a href="modules/portfolio/">Portfolio</a></li>
+                        <li><a href="modules/LogicLab-1.0.2/">Logic Lab</a></li>
                         <li><a href="#modules">ECE Toolkit</a></li>
-                        <li><a href="#modules">Logic Lab</a></li>
                         <li><a href="#modules">Python Hub</a></li>
                         <li><a href="#modules">C Programming</a></li>
                         <li><a href="#modules">Budget Tracker</a></li>

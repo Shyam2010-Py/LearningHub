@@ -4,6 +4,108 @@ All notable changes to **Student Hub** are documented here. The format is based 
 
 ---
 
+## [1.1.1] — 2026-08-04
+
+### 🔀 Reordered modules
+
+- Reordered modules so Logic Lab appears before ECE Toolkit to reflect the current release sequence.
+
+The new module order on every surface is:
+
+1. Portfolio (Live)
+2. Logic Lab (Live)
+3. ECE Toolkit (Coming soon)
+4. Python Hub (Coming soon)
+5. C Programming Hub (Coming soon)
+6. Student Budget Tracker (Coming soon)
+
+**Where the order was updated (visual only — no URLs, no functionality changed):**
+
+- **Home dashboard — Modules grid**: Logic Lab card now sits between Portfolio and ECE Toolkit.
+- **Home dashboard — Continue Learning**: added an "ECE Toolkit — Coming soon" entry between Logic Lab and Python Hub to mirror the new module order.
+- **Drawer navigation**: "Learning" section now lists Logic Lab first, then ECE Toolkit, then Python Hub, then C Programming.
+- **Footer modules list**: Portfolio → Logic Lab → ECE Toolkit → Python Hub → C Programming → Budget Tracker.
+- **Hero search keyword index** (`js/hub.js`): already reflected the new order (Portfolio → Logic Lab → ECE Toolkit); order preserved.
+- **Quick Access** and **Recent Activity**: not module-order-dependent, but their contents still align with the current live modules.
+
+**Preserved unchanged:** all CSS theme tokens, hover effects, gradients, badges, animations, responsive breakpoints, SVG icons, route URLs, and PWA behavior.
+
+---
+
+## [1.1.0] — 2026-08-04
+
+### 🚀 Major — Logic Lab module is now LIVE
+
+Student Hub now ships with **two live modules** integrated: **Portfolio** and **Logic Lab**. Logic Lab's 17+ learning pages, 7 simulators, 110+ quiz questions, conversion calculators, and complete notes are all reachable directly from the Hub home.
+
+### ✨ Added
+
+#### Logic Lab integration (`modules/LogicLab-1.0.2/`)
+
+- **Integrated Logic Lab as the second live module**:
+  - Number System Converter (Binary/Octal/Decimal/Hex)
+  - Logic Gates Simulator (AND, OR, NOT, NAND, NOR, XOR, XNOR) with SVG visualizations
+  - Truth Table Generator with CSV export
+  - Binary Arithmetic (Addition, Subtraction, Multiplication, Division)
+  - 1's and 2's Complement Calculator
+  - Half & Full Adder interactive simulators
+  - Flip-Flops (SR, JK, D, T) with state log
+  - Multiplexer / Demultiplexer (2:1, 4:1)
+  - Encoder / Decoder (4-to-2, 8-to-3 priority, BCD-to-7-seg)
+  - Comprehensive Formula Sheet
+  - Concise Study Notes
+  - Quiz System with 110+ randomized questions across 9 categories
+  - About page, Changelog, Offline fallback
+  - Original PWA (manifest + service worker) preserved
+
+- **Hub ↔ Module integration bridge**:
+  - New file `modules/LogicLab-1.0.2/css/hub-bridge.css` — Hub top bar + footer styles
+  - New file `modules/LogicLab-1.0.2/js/hub-bridge.js` — non-destructively injects Hub shell into every Logic Lab page (top bar at top of body, footer at end of body)
+  - Hub top bar contains "Student Hub / Logic Lab" breadcrumb + "Back to Hub" button
+  - Hub footer contains brand + module links + connect links + module identification
+  - All 20 Logic Lab pages updated to load the bridge — preserves every existing feature
+
+- **Logic Lab Sidebar / Topbar / Bottom Nav preserved**:
+  - Original sidebar (desktop) and bottom nav (mobile) remain in place
+  - Hub bar sits cleanly **above** the existing Logiclab topbar
+  - Hub footer sits **below** the existing Logiclab footer
+  - Light/Dark theme toggle inside Logiclab still works exactly as before
+
+- **Logic Lab service worker updated**:
+  - Bumped cache version to `logiclab-v1.1.0` so existing installs receive the new files
+  - Added `hub-bridge.css`, `hub-bridge.js` to the pre-cache list
+  - Footer version label updated from `v1.0.0` to `v1.1.0`
+  - Added "← Back to Student Hub" link inside the Logiclab footer
+
+- **Hub home updates**:
+  - Logic Lab card upgraded from "Coming soon" → Live with **● Live** status
+  - Added **Digital Electronics** category badge to Logic Lab card
+  - Logic Lab added to **Continue Learning** list (linked to converter page)
+  - Logic Lab added to **Quick Access** grid (Logic Gates + Logic Quiz tiles)
+  - Logic Lab added to **Recent Activity** list
+  - Drawer: Logic Lab entry activated (no more "Soon" badge)
+  - Footer module list: Logic Lab now a working link
+  - Hub drawer version updated to v1.1.0
+  - Recent Activity copy updated to reflect "2 modules live"
+
+- **Global search** (`js/hub.js`):
+  - Expanded keyword index so searching for "logic", "gates", "digital", "circuit", "flip-flop", "adder", "multiplexer", "decoder", "encoder", "binary", "boolean", "truth", "complement", "kmap", "quiz", etc. now opens the Logic Lab module
+  - Portfolio and other future-module keywords preserved
+
+- **New utility CSS class** in `css/hub.css`:
+  - `.module-card .badge-category` — pill-shaped category badge for module cards (used by Logic Lab)
+
+### 📦 Architecture note
+
+- LogicLab is kept at `modules/LogicLab-1.0.2/` (its original folder name) to preserve its SW cache key and manifest identity. The same integration works at any path because both the Hub link and bridge paths use **relative** URLs.
+- The bridge model — inject-only — means future modules (ECE Toolkit, Python Hub, C Programming Hub, Student Budget Tracker) can adopt the same pattern: add `hub-bridge.css` + `hub-bridge.js` and a card on the home.
+
+### 📖 Documentation
+- README.md updated to v1.1.0 — full project structure, module table, integration notes
+- GUIDE.md updated — new "Adding a Module" section with the hub-bridge pattern
+
+---
+
 ## [1.0.1] — 2026-08-04
 
 ### 🔄 Update flow polish

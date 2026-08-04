@@ -10,11 +10,13 @@ Student Hub is a **shell + modules** architecture:
 
 - The **shell** (`index.html`, `css/hub.css`, `js/hub.js`) provides navigation, layout, PWA plumbing, and the home dashboard.
 - Each **module** lives in `modules/<name>/` and is fully self-contained — its own HTML, CSS, JS, manifest, service worker, and assets.
+- A module **optionally** adopts the **Hub bridge pattern** to share the Student Hub shell (top bar + footer) with the rest of the hub while keeping its own UI intact.
 
 This means:
 - You can drop in a new module folder and link to it from the home page — nothing else has to change.
 - A broken or offline module never breaks the hub shell (different service workers scope themselves per module).
 - Modules can be deployed independently (or as part of the same site).
+- Each module keeps its own navigation, theme, and PWA — none of its features are replaced by the hub.
 
 ---
 
@@ -36,7 +38,7 @@ assets/                 ← Shared assets (icons, illustrations, hub logo)
   logo-icon.svg         ← Hub monogram
 
 modules/                ← Per-module folders
-  portfolio/            ← Live module
+  portfolio/            ← Live module 1
     index.html          ← Portfolio page (with hub top bar)
     offline.html
     manifest.json
@@ -44,6 +46,24 @@ modules/                ← Per-module folders
     css/style.css
     js/main.js
     assets/             ← Portfolio's own assets
+  LogicLab-1.0.2/       ← Live module 2 — Digital Electronics
+    index.html          ← Logic Lab home (gates, quizzes, calculators)
+    18 module pages (gates / adder / flipflop / MUX / etc.)
+    offline.html
+    manifest.json
+    sw.js               ← PWA service worker
+    css/
+      style.css         ← Original Logiclab design system
+      responsive.css
+      extra.css
+      hub-bridge.css    ← ← Hub integration styles
+    js/
+      components.js     ← Sidebar / topbar / bottom nav injection
+      main.js
+      converter.js, gates.js, arithmetic.js, quiz.js, search.js
+      pwa.js
+      hub-bridge.js     ← ← Hub integration script (injects top + footer)
+    assets/             ← icon-192.png, icon-512.png
 ```
 
 ---
@@ -76,6 +96,7 @@ All shared design tokens live in `:root`:
 - `.quick-grid` + `.quick-item` — 6-col quick access grid
 - `.tip-card` — highlighted tip card
 - `.drawer`, `.drawer-panel`, `.drawer-link` — slide-in nav
+- `.badge-category` — pill-shaped category badge for module cards
 
 ---
 
@@ -101,7 +122,10 @@ Runs once after page load. It:
 
 1. Wires up the **drawer** toggle (hamburger, close, overlay, ESC key).
 2. Adds **scroll-driven navbar** styling (`.scrolled` class after 16px).
-3. Wires the **hero search** to highlight the Portfolio card (placeholder for future cross-module search).
+3. Wires the **hero search** to a keyword index that routes the user to the right module:
+   - Portfolio / profile / project / skill → `modules/portfolio/`
+   - Logic / gates / digital / circuit / binary / adder / flip-flop / mux / encoder / decoder / truth / complement / arithmetic / kmap / quiz → `modules/LogicLab-1.0.2/`
+   - ECE toolkit, Python hub, C programming, Budget tracker → scroll to module grid (coming soon)
 4. Sets up **reveal-on-scroll** for any element with `.reveal` via `IntersectionObserver`.
 5. Registers the **service worker** and listens for `updatefound` → shows the update toast; on `controllerchange`, reloads the page to apply the new SW.
 6. Listens for `beforeinstallprompt` → shows the install toast; on click, calls `prompt()` and stores the user's choice.
@@ -216,7 +240,131 @@ That's it — the module is now reachable from the hub home, the drawer, and onc
 
 ---
 
-## 9. Performance Notes
+## 9. Module Integration: Logic Lab
+
+Logic Lab (the second live module) uses the **Hub bridge pattern** so it looks part of Student Hub without losing any of its own features.
+
+### Files added for integration
+
+```
+modules/LogicLab-1.0.2/
+├── css/
+│   └── hub-bridge.css   ← NEW — Hub top-bar + footer styles
+├── js/
+│   ├── hub-bridge.js    ← NEW — non-destructively injects Hub shell
+│   └── components.js    ← UPDATED — Logiclab footer now has "Back to Hub" link
+└── sw.js                ← UPDATED — cache version bumped to v1.1.0; pre-cache includes bridge files
+```
+
+### How the bridge works
+
+1. Every Logiclab page loads `css/hub-bridge.css` in the `<head>` (right after its own styles).
+2. Before `</body>`, every page loads `js/hub-bridge.js`.
+3. The script waits for `DOMContentLoaded`, then:
+   - Creates a `<div class="hub-bar">` containing "Student Hub / Logic Lab" + a "Back to Hub" button → `document.body.insertBefore(bar, document.body.firstChild)`.
+   - Creates a `<footer class="hub-footer">` containing the Hub brand, module links, and connect links → `document.body.appendChild(footer)`.
+4. Both injections are guarded with `.hub-bar` / `.hub-footer` checks so the script is idempotent.
+
+Nothing in the Logiclab DOM is replaced. Its existing sidebar, topbar, bottom nav, footer, and theme all keep working exactly as before.
+
+### Preserved functionality (zero loss)
+
+- ✅ All 17+ learning pages (gates, adders, flip-flops, MUX, DEMUX, encoder, decoder, etc.)
+- ✅ All 7 interactive simulators (live toggle inputs, SVG visualizations)
+- ✅ All 110+ quiz questions, scoring, randomization, per-category analytics
+- ✅ All study notes (searchable)
+- ✅ All JavaScript functionality (logic gate math, binary arithmetic, K-map helpers, PWA update prompt)
+- ✅ All SVG circuit diagrams
+- ✅ PWA functionality (manifest, service worker, install, update prompt)
+- ✅ Light / Dark theme toggle inside Logiclab
+- ✅ Conversion history, quiz stats — all preserved in localStorage
+- ✅ Original Logiclab sidebar (desktop) + bottom nav (mobile) — both kept intact
+- ✅ Original Logiclab footer — kept, with a small "← Back to Student Hub" link added
+
+---
+
+## 10. Adding a New Module
+
+### Step 1 — Create the folder
+
+```
+modules/<name>/
+├── index.html
+├── css/style.css
+├── js/main.js
+├── manifest.json
+├── service-worker.js
+├── offline.html
+└── assets/
+```
+
+(Optional: add a `css/hub-bridge.css` + `js/hub-bridge.js` if you want the Student Hub shell to appear on your module pages — see Step 6.)
+
+### Step 2 — Add a card on the home page
+
+In `index.html`, find the `.modules-grid` and add a new card:
+
+```html
+<a href="modules/<name>/" class="module-card reveal" data-theme="green" data-key="<name>">
+    <div class="module-icon">
+        <svg viewBox="0 0 24 24" ...>...</svg>
+    </div>
+    <h3>Module Name</h3>
+    <span class="badge-category">Category</span>
+    <p>Short description.</p>
+    <div class="module-meta">
+        <span class="status status-live">● Live</span>
+        <span class="arrow">→</span>
+    </div>
+</a>
+```
+
+Pick a `data-theme` from: `cyan`, `indigo`, `green`, `orange`, `pink`, `violet`.
+
+### Step 3 — Enable the drawer's link
+
+In `index.html`'s drawer, change the corresponding `<span class="drawer-link disabled">` to:
+
+```html
+<a href="modules/<name>/" class="drawer-link" data-match="<name>">
+    <svg ...>...</svg>
+    Module Name
+</a>
+```
+
+### Step 4 — Pre-cache in the hub service worker
+
+In `service-worker.js` → `STATIC_ASSETS`, add the module entry. Bump the `VERSION` constant to force a fresh cache.
+
+### Step 5 — Add Continue Learning, Quick Access, Recent Activity entries (optional)
+
+Three easy places to surface the module:
+
+- **Continue Learning** — add a `.continue-item` with a progress bar.
+- **Quick Access** — add a `.quick-item` linking to a relevant section of the module.
+- **Recent Activity** — add an `.activity-item` for any related recent event.
+
+### Step 6 — Add the hub-bridge pattern (optional but recommended)
+
+If you want the Student Hub shell (top bar + footer) to appear on your module's pages:
+
+1. Copy `modules/LogicLab-1.0.2/css/hub-bridge.css` to `modules/<name>/css/`.
+2. Copy `modules/LogicLab-1.0.2/js/hub-bridge.js` to `modules/<name>/js/`.
+3. In every HTML page of your module, add:
+   ```html
+   <link rel="stylesheet" href="css/hub-bridge.css">   <!-- in <head> -->
+   ...
+   <script src="js/hub-bridge.js"></script>            <!-- just before </body> -->
+   ```
+4. Bump your module's service worker cache version so users get the new bridge files.
+
+The bridge is **inject-only** — it never replaces your UI; it just adds a top bar and footer.
+
+That's it — the module is now reachable from the hub home, the drawer, and once visited, it works offline. ECE Toolkit, Python Hub, C Programming Hub, and Student Budget Tracker can all be added using this exact process.
+
+---
+
+## 11. Performance Notes
 
 - All images are **SVG** — no raster files anywhere in the build.
 - The home page uses **lazy loading** (`loading="lazy"`) on icons and project thumbnails.
@@ -227,7 +375,7 @@ That's it — the module is now reachable from the hub home, the drawer, and onc
 
 ---
 
-## 10. Accessibility
+## 12. Accessibility
 
 - Semantic HTML (`<nav>`, `<main>`, `<footer>`, `<section>`, `<aside>`).
 - ARIA labels on icon-only buttons and the drawer dialog.
@@ -237,7 +385,7 @@ That's it — the module is now reachable from the hub home, the drawer, and onc
 
 ---
 
-## 11. Browser Support
+## 13. Browser Support
 
 - Chrome / Edge ≥ 90 ✅
 - Firefox ≥ 90 ✅
@@ -247,7 +395,7 @@ That's it — the module is now reachable from the hub home, the drawer, and onc
 
 ---
 
-## 12. Future Ideas
+## 14. Future Ideas
 
 - **Cross-module search** — index content from all modules and search from the hub.
 - **Per-user dashboard** — persist "Recent Activity" and "Continue Learning" via `localStorage`.

@@ -1,12 +1,12 @@
 /* ============================================
    Service Worker — Student Hub
-   V1.0.1
+   V1.1.0
    - Cache-first for static assets
    - Network-first for HTML (with offline fallback)
    - Versioned caches; old caches purged on activate
    ============================================ */
 
-const VERSION = 'v1.0.1';
+const VERSION = 'v1.1.0';
 const STATIC_CACHE  = `hub-static-${VERSION}`;
 const HTML_CACHE    = `hub-html-${VERSION}`;
 const RUNTIME_CACHE = `hub-runtime-${VERSION}`;
@@ -24,7 +24,15 @@ const STATIC_ASSETS = [
   './assets/icons/icon-192.svg',
   './assets/icons/icon-512.svg',
   './assets/illustrations/hero.svg',
-  './modules/portfolio/index.html'
+  './modules/portfolio/index.html',
+  // Logic Lab module entry points (live)
+  './modules/LogicLab-1.0.2/index.html',
+  './modules/LogicLab-1.0.2/gates.html',
+  './modules/LogicLab-1.0.2/quiz.html',
+  './modules/LogicLab-1.0.2/notes.html',
+  './modules/LogicLab-1.0.2/converter.html',
+  './modules/LogicLab-1.0.2/css/hub-bridge.css',
+  './modules/LogicLab-1.0.2/js/hub-bridge.js'
 ];
 
 /* Install — pre-cache essentials */

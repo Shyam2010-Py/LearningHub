@@ -67,15 +67,31 @@
     if (heroSearch) {
         heroSearch.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
-                const q = heroSearch.value.trim();
+                const q = heroSearch.value.trim().toLowerCase();
                 if (q) {
-                    // For now, focus Portfolio module as a basic search behaviour
-                    const portfolioCard = document.querySelector('.module-card[data-key="portfolio"]');
-                    if (portfolioCard) {
-                        portfolioCard.style.transform = 'translateY(-4px) scale(1.02)';
-                        setTimeout(() => { portfolioCard.style.transform = ''; }, 400);
-                        portfolioCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    // Build a small module index — keywords → selectors / URLs
+                    const moduleIndex = [
+                        { keys: ['portfolio', 'profile', 'about', 'project', 'skill'], url: 'modules/portfolio/' },
+                        { keys: ['logic', 'gate', 'digital', 'circuit', 'flip', 'flipflop', 'adder', 'multiplexer', 'decoder', 'encoder', 'binary', 'boolean', 'truth', 'complement', 'arithmetic', 'karnaugh', 'kmap', 'quiz'], url: 'modules/LogicLab-1.0.2/' },
+                        { keys: ['ece', 'toolkit', 'calculator'], url: '#modules' },
+                        { keys: ['python', 'py', 'script'], url: '#modules' },
+                        { keys: ['c programming', 'clang', 'pointer', 'memory'], url: '#modules' },
+                        { keys: ['budget', 'expense', 'money', 'finance', 'tracker'], url: '#modules' }
+                    ];
+                    const match = moduleIndex.find(m => m.keys.some(k => q.includes(k)));
+                    if (match) {
+                        if (match.url.startsWith('#')) {
+                            // Coming-soon module — scroll to modules grid
+                            const sec = document.getElementById('modules');
+                            if (sec) sec.scrollIntoView({ behavior: 'smooth' });
+                        } else {
+                            window.location.href = match.url;
+                            return;
+                        }
                     }
+                    // Default: scroll to module grid
+                    const sec = document.getElementById('modules');
+                    if (sec) sec.scrollIntoView({ behavior: 'smooth' });
                 }
             }
         });

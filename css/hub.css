@@ -658,6 +658,22 @@ main {
     position: relative;
     z-index: 1;
 }
+.module-card .badge-category {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--card-color, var(--primary));
+    background: var(--card-bg, rgba(0, 212, 255, 0.1));
+    border: 1px solid currentColor;
+    border-radius: 50px;
+    padding: 0.2rem 0.6rem;
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
 .module-card p {
     color: var(--text-soft);
     font-size: 0.9rem;

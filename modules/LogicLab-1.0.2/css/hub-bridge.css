@@ -1,0 +1,215 @@
+/* ==========================================================================
+   Student Hub Integration Bridge for LogicLab
+   Adds Student Hub shell elements without disturbing LogicLab design
+   ========================================================================== */
+
+/* --- Hub top bar (sits above Logiclab topbar) --- */
+.hub-bar {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  background: linear-gradient(135deg, rgba(11,16,32,0.95), rgba(20,27,45,0.95));
+  border-bottom: 1px solid rgba(0, 212, 255, 0.18);
+  padding: 0.5rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.hub-bar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.hub-bar-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #00D4FF, #4F46E5);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: -0.02em;
+}
+
+.hub-bar-title {
+  color: #E6ECFF;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+}
+
+.hub-bar-title .accent {
+  background: linear-gradient(135deg, #00D4FF, #00E676);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hub-bar-divider {
+  color: #6B7491;
+  font-size: 0.85rem;
+  margin: 0 0.25rem;
+}
+
+.hub-bar-module {
+  color: #A8B2D1;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.hub-bar-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  color: #00D4FF;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.82rem;
+  transition: all 0.25s ease;
+}
+
+.hub-bar-link:hover {
+  background: rgba(0, 212, 255, 0.18);
+  border-color: rgba(0, 212, 255, 0.5);
+  color: #fff;
+}
+
+.hub-bar-link svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* --- Hub footer (sits below Logiclab footer) --- */
+.hub-footer {
+  margin-top: 3rem;
+  padding: 2rem 1.5rem 1.5rem;
+  background: rgba(11, 16, 32, 0.7);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.hub-footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hub-footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.hub-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #E6ECFF;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.hub-footer-brand .accent {
+  background: linear-gradient(135deg, #00D4FF, #00E676);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hub-footer-desc {
+  color: #A8B2D1;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.hub-footer-col h5 {
+  color: #E6ECFF;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.hub-footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.hub-footer-col li {
+  margin-bottom: 0.4rem;
+}
+
+.hub-footer-col a {
+  color: #A8B2D1;
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s ease;
+}
+
+.hub-footer-col a:hover {
+  color: #00D4FF;
+}
+
+.hub-footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  color: #6B7491;
+  font-size: 0.78rem;
+}
+
+@media (max-width: 768px) {
+  .hub-bar {
+    padding: 0.5rem 0.85rem;
+  }
+  .hub-bar-title {
+    font-size: 0.88rem;
+  }
+  .hub-bar-module {
+    display: none;
+  }
+  .hub-bar-divider {
+    display: none;
+  }
+  .hub-bar-link {
+    padding: 0.35rem 0.6rem;
+    font-size: 0.75rem;
+  }
+  .hub-footer-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+/* Push Logiclab content down so hub bar doesn't overlap */
+.hub-bar + #sidebar-mount,
+.hub-bar + #topbar-mount,
+.hub-bar + div {
+  margin-top: 0;
+}
+
+@media (max-width: 768px) {
+  /* On mobile the sidebar is hidden anyway, so hub bar can sit at top */
+  #sidebar-mount { display: contents; }
+}
