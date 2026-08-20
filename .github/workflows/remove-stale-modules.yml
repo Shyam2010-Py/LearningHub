@@ -1,0 +1,34 @@
+name: Remove stale embedded modules
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Remove stale embedded applications
+        run: |
+          rm -rf modules/LogicLab-1.0.2 modules/logiclab modules/portfolio
+          rm -f .github/workflows/remove-stale-modules.yml
+
+      - name: Commit cleanup
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "No stale modules found."
+            exit 0
+          fi
+          git add -A
+          git commit -m "refactor: remove stale embedded modules"
+          git push
