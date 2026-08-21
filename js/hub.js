@@ -1,6 +1,6 @@
 /* ============================================
    LearningHub — Shell logic + motion + account
-   V2.3.0
+   V2.3.1
    ============================================ */
 (function () {
     'use strict';
@@ -65,8 +65,7 @@
                 }
                 progress[key] = value;
                 renderContinueGrid();
-                const user = currentUser;
-                supabase.from('activity_events').insert({ user_id: user.id, event_type: 'progress_update', project_key: key, metadata: { percent: value } }).catch(() => {});
+                supabase.from('activity_events').insert({ user_id: currentUser.id, event_type: 'progress_update', project_key: key, metadata: { percent: value } }).catch(() => {});
             });
         });
     }
@@ -94,15 +93,17 @@
         const menu = document.getElementById('mobileMenu');
         if (!button || !menu) return;
         function setOpen(open) {
+            menu.hidden = !open;
             menu.classList.toggle('open', open);
             button.classList.toggle('is-open', open);
             button.setAttribute('aria-expanded', String(open));
             button.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
         }
-        button.addEventListener('click', () => setOpen(!menu.classList.contains('open')));
+        setOpen(false);
+        button.addEventListener('click', () => setOpen(menu.hidden));
         menu.querySelectorAll('a').forEach(link => link.addEventListener('click', () => setOpen(false)));
         document.addEventListener('keydown', event => {
-            if (event.key === 'Escape' && menu.classList.contains('open')) { setOpen(false); button.focus(); }
+            if (event.key === 'Escape' && !menu.hidden) { setOpen(false); button.focus(); }
         });
         const mq = window.matchMedia('(min-width: 851px)');
         const onChange = () => { if (mq.matches) setOpen(false); };
