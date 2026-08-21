@@ -8,6 +8,7 @@
 <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 <link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="css/hub.css">
+<link rel="stylesheet" href="css/auth.css">
 <title>Account — LearningHub</title>
 </head>
 <body class="auth-page">
@@ -34,22 +35,18 @@
         <span>Name</span>
         <input id="displayName" type="text" autocomplete="name" maxlength="80" placeholder="Your name">
       </label>
-
       <label class="field">
         <span>Email</span>
         <input id="email" type="email" autocomplete="email" required placeholder="you@example.com">
       </label>
-
       <label class="field" id="passwordField">
         <span>Password</span>
         <input id="password" type="password" autocomplete="current-password" minlength="8" required placeholder="At least 8 characters">
       </label>
-
       <button class="btn btn-primary auth-submit" id="authSubmit" type="submit">Sign in</button>
     </form>
 
     <button class="forgot-btn" id="forgotButton" type="button">Forgot password?</button>
-
     <div class="auth-message" id="authMessage" role="status" aria-live="polite"></div>
 
     <div class="reset-panel" id="resetPanel" hidden>
