@@ -2,20 +2,12 @@
 (function () {
   'use strict';
 
-  const PROJECTS = {
-    logiclab: 'https://shyam2010-py.github.io/LogicLab/',
-    ece: 'https://shyam2010-py.github.io/ece-toolkit/',
-    micro: 'https://shyam2010-py.github.io/microcontroller-hub/',
-    c: 'https://shyam2010-py.github.io/c-programming-hub/',
-    python: 'https://shyam2010-py.github.io/python-for-students/'
-  };
-
   const TARGETS = new Map([
-    [PROJECTS.logiclab, 'logiclab'],
-    [PROJECTS.ece, 'ece-toolkit'],
-    [PROJECTS.micro, 'microcontroller-hub'],
-    [PROJECTS.c, 'c-programming-hub'],
-    [PROJECTS.python, 'python-for-students']
+    ['https://shyam2010-py.github.io/LogicLab/', 'logiclab'],
+    ['https://shyam2010-py.github.io/ece-toolkit/', 'ece-toolkit'],
+    ['https://shyam2010-py.github.io/microcontroller-hub/', 'microcontroller-hub'],
+    ['https://shyam2010-py.github.io/c-programming-hub/', 'c-programming-hub'],
+    ['https://shyam2010-py.github.io/python-for-students/', 'python-for-students']
   ]);
 
   async function createHandoff(projectKey) {
@@ -25,7 +17,7 @@
     const response = await fetch('https://eqplsewompiudxibowrz.supabase.co/functions/v1/create-learning-handoff', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${session.access_token}` },
-      body: JSON.stringify({ target_project: projectKey })
+      body: JSON.stringify({ project_key: projectKey })
     });
     if (!response.ok) return null;
     const data = await response.json();
@@ -35,18 +27,16 @@
   document.addEventListener('click', async (event) => {
     const link = event.target.closest('a[href]');
     if (!link || !link.href || link.target !== '_blank') return;
-    const projectKey = TARGETS.get(link.href.replace(/\/$/, '') + '/');
-    if (!projectKey) return;
+    const normalized = link.href.replace(/\/$/, '') + '/';
+    const projectKey = TARGETS.get(normalized);
+    if (!projectKey || link.dataset.handoffBound === '1') return;
+    link.dataset.handoffBound = '1';
     event.preventDefault();
     try {
       const code = await createHandoff(projectKey);
-      if (code) {
-        const target = new URL(link.href);
-        target.searchParams.set('lh_code', code);
-        window.open(target.href, '_blank', 'noopener');
-      } else {
-        window.open(link.href, '_blank', 'noopener');
-      }
+      const target = new URL(link.href);
+      if (code) target.searchParams.set('lh', code);
+      window.open(target.href, '_blank', 'noopener');
     } catch (error) {
       console.warn('[LearningHub] Handoff failed:', error);
       window.open(link.href, '_blank', 'noopener');
