@@ -1,24 +1,92 @@
 /* ============================================
    LearningHub — Shell logic + motion + account
-   V2.2.1
+   V2.3.0
    ============================================ */
 (function () {
     'use strict';
 
-    const DEFAULT_PROGRESS = {
-        logiclab: { label: 'LogicLab', desc: 'Number systems & logic gates', url: 'https://shyam2010-py.github.io/LogicLab/', percent: 8 },
-        cprogramming: { label: 'C Programming', desc: 'Structured programming fundamentals', url: 'https://shyam2010-py.github.io/c-programming-hub/', percent: 14 },
-        microhub: { label: 'Microcontroller Hub', desc: 'ESP32, sensors & embedded basics', url: 'https://shyam2010-py.github.io/microcontroller-hub/', percent: 6 },
-        python: { label: 'Python for Students', desc: 'Syntax, loops, functions & projects', url: 'https://shyam2010-py.github.io/python-for-students/', percent: 22 }
+    const PROJECTS = {
+        logiclab: { label: 'LogicLab', desc: 'Number systems & logic gates', url: 'https://shyam2010-py.github.io/LogicLab/' },
+        cprogramming: { label: 'C Programming', desc: 'Structured programming fundamentals', url: 'https://shyam2010-py.github.io/c-programming-hub/' },
+        microhub: { label: 'Microcontroller Hub', desc: 'ESP32, sensors & embedded basics', url: 'https://shyam2010-py.github.io/microcontroller-hub/' },
+        python: { label: 'Python for Students', desc: 'Syntax, loops, functions & projects', url: 'https://shyam2010-py.github.io/python-for-students/' }
     };
+
+    const DEFAULT_PROGRESS = Object.fromEntries(Object.keys(PROJECTS).map(key => [key, 0]));
+    let currentUser = null;
+    let progress = { ...DEFAULT_PROGRESS };
 
     function renderContinueGrid() {
         const grid = document.getElementById('continueGrid');
         if (!grid) return;
-        grid.innerHTML = Object.values(DEFAULT_PROGRESS).map(item => {
-            const pct = Math.max(0, Math.min(100, Number(item.percent) || 0));
-            return `<a class="continue-card" href="${item.url}" target="_blank" rel="noopener" aria-label="Open ${item.label}"><span class="label">${item.label}</span><h3>${item.desc}</h3><p class="desc">Demo progress · ${pct}%</p><div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${item.label} sample progress"><div class="progress-bar" data-progress="${pct}" style="width:0%"></div></div><div class="pct"><span>Sample progress</span><b>${pct}%</b></div><span class="continue-link">Continue →</span></a>`;
+        grid.innerHTML = Object.entries(PROJECTS).map(([key, item]) => {
+            const pct = Math.max(0, Math.min(100, Number(progress[key]) || 0));
+            return `<article class="continue-card" data-progress-key="${key}">
+                <a class="continue-card-main" href="${item.url}" target="_blank" rel="noopener" aria-label="Open ${item.label}">
+                    <span class="label">${item.label}</span>
+                    <h3>${item.desc}</h3>
+                </a>
+                <p class="desc">Your progress · ${pct}%</p>
+                <div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${item.label} progress"><div class="progress-bar" data-progress="${pct}" style="width:0%"></div></div>
+                <div class="pct"><span>Personal progress</span><b>${pct}%</b></div>
+                <div class="continue-actions"><a class="continue-link" href="${item.url}" target="_blank" rel="noopener">Continue →</a><button class="progress-edit" type="button" data-progress-edit="${key}" ${currentUser ? '' : 'disabled'}>${currentUser ? 'Update' : 'Sign in to update'}</button></div>
+                <div class="progress-picker" data-progress-picker="${key}" hidden aria-label="Set ${item.label} progress">
+                    ${[0,25,50,75,100].map(value => `<button type="button" data-progress-value="${value}">${value}%</button>`).join('')}
+                </div>
+            </article>`;
         }).join('');
+        bindProgressControls();
+        animateProgressBars();
+    }
+
+    function animateProgressBars() {
+        requestAnimationFrame(() => document.querySelectorAll('.progress-bar[data-progress]').forEach(bar => { bar.style.width = `${bar.dataset.progress}%`; }));
+    }
+
+    function bindProgressControls() {
+        document.querySelectorAll('[data-progress-edit]').forEach(button => {
+            button.addEventListener('click', () => {
+                const key = button.dataset.progressEdit;
+                const picker = document.querySelector(`[data-progress-picker="${key}"]`);
+                if (picker) picker.hidden = !picker.hidden;
+            });
+        });
+        document.querySelectorAll('[data-progress-value]').forEach(button => {
+            button.addEventListener('click', async () => {
+                if (!currentUser) return;
+                const key = button.closest('[data-progress-picker]')?.dataset.progressPicker;
+                const value = Number(button.dataset.progressValue);
+                if (!key || !PROJECTS[key]) return;
+                const { supabase } = await import('./supabase.js');
+                const { error } = await supabase.from('learning_progress').upsert({ user_id: currentUser.id, project_key: key, percent: value }, { onConflict: 'user_id,project_key' });
+                if (error) {
+                    console.warn('[LearningHub] Progress update failed:', error);
+                    return;
+                }
+                progress[key] = value;
+                renderContinueGrid();
+                const user = currentUser;
+                supabase.from('activity_events').insert({ user_id: user.id, event_type: 'progress_update', project_key: key, metadata: { percent: value } }).catch(() => {});
+            });
+        });
+    }
+
+    async function loadUserProgress(user) {
+        progress = { ...DEFAULT_PROGRESS };
+        currentUser = user || null;
+        if (!user) {
+            renderContinueGrid();
+            return;
+        }
+        try {
+            const { supabase } = await import('./supabase.js');
+            const { data, error } = await supabase.from('learning_progress').select('project_key, percent').eq('user_id', user.id);
+            if (error) throw error;
+            (data || []).forEach(row => { if (PROJECTS[row.project_key]) progress[row.project_key] = Number(row.percent) || 0; });
+        } catch (error) {
+            console.warn('[LearningHub] Could not load progress:', error);
+        }
+        renderContinueGrid();
     }
 
     function initMobileMenu() {
@@ -85,6 +153,8 @@
             .card:hover .arrow,.continue-card:hover .continue-link{transform:translateX(4px)}
             .arrow,.continue-link{display:inline-block;transition:transform .25s ease,color .25s ease}
             .progress-bar{transition:width 1s cubic-bezier(.22,1,.36,1)}
+            .progress-edit,.progress-picker button{cursor:pointer}
+            .progress-picker[hidden]{display:none}.progress-picker{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.progress-picker button{border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:999px;padding:6px 10px}.progress-picker button:hover{border-color:var(--accent);color:var(--accent)}
             .roadmap-line{transform-origin:left center;transition:transform 1.1s cubic-bezier(.22,1,.36,1)}
             .roadmap-shell:not(.lh-visible) .roadmap-line{transform:scaleX(0)}
             .roadmap-shell.lh-visible .roadmap-line{transform:scaleX(1)}
@@ -137,14 +207,12 @@
             const profile = document.querySelector('.nav-profile');
             const mobileMenu = document.getElementById('mobileMenu');
             if (!profile) return;
-
             let mobileAuth = mobileMenu?.querySelector('.mobile-auth-slot');
             if (mobileMenu && !mobileAuth) {
                 mobileAuth = document.createElement('div');
                 mobileAuth.className = 'mobile-auth-slot';
                 mobileMenu.querySelector('.mobile-menu-inner')?.appendChild(mobileAuth);
             }
-
             const renderAccount = session => {
                 const user = session?.user;
                 if (!user) {
@@ -161,11 +229,10 @@
                     document.getElementById('mobileLogout')?.addEventListener('click', async () => { await supabase.auth.signOut(); window.location.reload(); });
                 }
             };
-
             const { data } = await supabase.auth.getSession();
             renderAccount(data.session);
-            supabase.auth.onAuthStateChange((_event, session) => renderAccount(session));
-
+            await loadUserProgress(data.session?.user || null);
+            supabase.auth.onAuthStateChange(async (_event, session) => { renderAccount(session); await loadUserProgress(session?.user || null); });
             const user = data.session?.user;
             if (user) {
                 await supabase.from('activity_events').insert({ user_id: user.id, event_type: 'page_view', page_path: window.location.pathname });
@@ -180,6 +247,7 @@
             }
         } catch (error) {
             console.warn('[LearningHub] Account integration unavailable:', error);
+            renderContinueGrid();
         }
     }
 
@@ -193,6 +261,5 @@
         registerServiceWorker();
         initAccount();
     }
-
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
