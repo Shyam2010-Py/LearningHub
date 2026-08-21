@@ -1,8 +1,8 @@
 /* ============================================
    Service Worker — LearningHub
-   V2.2.0
+   V2.2.1
    ============================================ */
-const VERSION = 'v2.2.0';
+const VERSION = 'v2.2.1';
 const STATIC_CACHE = `learninghub-static-${VERSION}`;
 const HTML_CACHE = `learninghub-html-${VERSION}`;
 const RUNTIME_CACHE = `learninghub-runtime-${VERSION}`;
@@ -71,7 +71,7 @@ async function networkFirst(req) {
     const offline = await caches.match('./offline.html');
     return offline || new Response('Offline', { status: 503, statusText: 'Offline' });
   }
-});
+}
 
 self.addEventListener('message', event => {
   if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
