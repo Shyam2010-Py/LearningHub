@@ -1,13 +1,13 @@
 /* ============================================
    Service Worker — LearningHub
-   V2.0.0
+   V2.1.0
    - Cache-first for static assets
    - Network-first for HTML (with offline fallback)
    - Versioned caches; old caches purged on activate
    - Only caches files that actually exist in the repo
    ============================================ */
 
-const VERSION = 'v2.0.0';
+const VERSION = 'v2.1.0';
 const STATIC_CACHE  = `learninghub-static-${VERSION}`;
 const HTML_CACHE    = `learninghub-html-${VERSION}`;
 const RUNTIME_CACHE = `learninghub-runtime-${VERSION}`;
@@ -27,7 +27,6 @@ const STATIC_ASSETS = [
     './assets/illustrations/hero.svg'
 ];
 
-/* Install — pre-cache essentials */
 self.addEventListener('install', (event) => {
     self.skipWaiting();
     event.waitUntil(
@@ -43,7 +42,6 @@ self.addEventListener('install', (event) => {
     );
 });
 
-/* Activate — purge old caches */
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) =>
@@ -60,22 +58,18 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-/* Fetch — routing strategy */
 self.addEventListener('fetch', (event) => {
     const req = event.request;
     if (req.method !== 'GET') return;
 
     const url = new URL(req.url);
-    // Cross-origin requests (e.g. the external GitHub Pages projects) are not handled here.
     if (url.origin !== self.location.origin) return;
 
-    // HTML navigations → network-first with offline fallback
     if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
         event.respondWith(networkFirst(req));
         return;
     }
 
-    // Static assets → cache-first
     event.respondWith(cacheFirst(req));
 });
 
