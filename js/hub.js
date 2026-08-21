@@ -1,6 +1,6 @@
 /* ============================================
    LearningHub — Shell logic + motion + account
-   V2.2.0
+   V2.2.1
    ============================================ */
 (function () {
     'use strict';
@@ -17,17 +17,7 @@
         if (!grid) return;
         grid.innerHTML = Object.values(DEFAULT_PROGRESS).map(item => {
             const pct = Math.max(0, Math.min(100, Number(item.percent) || 0));
-            return `
-                <a class="continue-card" href="${item.url}" target="_blank" rel="noopener" aria-label="Open ${item.label}">
-                    <span class="label">${item.label}</span>
-                    <h3>${item.desc}</h3>
-                    <p class="desc">Demo progress · ${pct}%</p>
-                    <div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${item.label} sample progress">
-                        <div class="progress-bar" data-progress="${pct}" style="width:0%"></div>
-                    </div>
-                    <div class="pct"><span>Sample progress</span><b>${pct}%</b></div>
-                    <span class="continue-link">Continue →</span>
-                </a>`;
+            return `<a class="continue-card" href="${item.url}" target="_blank" rel="noopener" aria-label="Open ${item.label}"><span class="label">${item.label}</span><h3>${item.desc}</h3><p class="desc">Demo progress · ${pct}%</p><div class="progress" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="${item.label} sample progress"><div class="progress-bar" data-progress="${pct}" style="width:0%"></div></div><div class="pct"><span>Sample progress</span><b>${pct}%</b></div><span class="continue-link">Continue →</span></a>`;
         }).join('');
     }
 
@@ -148,11 +138,17 @@
             const mobileMenu = document.getElementById('mobileMenu');
             if (!profile) return;
 
-            const renderAccount = (session) => {
+            let mobileAuth = mobileMenu?.querySelector('.mobile-auth-slot');
+            if (mobileMenu && !mobileAuth) {
+                mobileAuth = document.createElement('div');
+                mobileAuth.className = 'mobile-auth-slot';
+                mobileMenu.querySelector('.mobile-menu-inner')?.appendChild(mobileAuth);
+            }
+
+            const renderAccount = session => {
                 const user = session?.user;
                 if (!user) {
                     profile.innerHTML = '<span class="avatar" aria-hidden="true">?</span><span class="who">Guest<small>LearningHub</small></span><a class="nav-auth-link" href="./auth.html">Sign in</a>';
-                    const mobileAuth = mobileMenu?.querySelector('.mobile-auth-slot');
                     if (mobileAuth) mobileAuth.innerHTML = '<a href="./auth.html">Sign in to LearningHub →</a>';
                     return;
                 }
@@ -160,9 +156,10 @@
                 const initials = name.split(/\s+/).map(part => part[0]).join('').slice(0, 2).toUpperCase();
                 profile.innerHTML = `<span class="avatar" aria-hidden="true">${initials}</span><span class="who">${name}<small>Signed in</small></span><button class="nav-auth-link" id="logoutButton" type="button">Log out</button>`;
                 document.getElementById('logoutButton')?.addEventListener('click', async () => { await supabase.auth.signOut(); window.location.reload(); });
-                const mobileAuth = mobileMenu?.querySelector('.mobile-auth-slot');
-                if (mobileAuth) mobileAuth.innerHTML = '<button class="mobile-auth-button" id="mobileLogout" type="button">Log out</button>';
-                document.getElementById('mobileLogout')?.addEventListener('click', async () => { await supabase.auth.signOut(); window.location.reload(); });
+                if (mobileAuth) {
+                    mobileAuth.innerHTML = '<button class="mobile-auth-button" id="mobileLogout" type="button">Log out</button>';
+                    document.getElementById('mobileLogout')?.addEventListener('click', async () => { await supabase.auth.signOut(); window.location.reload(); });
+                }
             };
 
             const { data } = await supabase.auth.getSession();
