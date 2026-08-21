@@ -1,8 +1,8 @@
 /* ============================================
    Service Worker — LearningHub
-   V2.2.1
+   V2.3.1
    ============================================ */
-const VERSION = 'v2.2.1';
+const VERSION = 'v2.3.1';
 const STATIC_CACHE = `learninghub-static-${VERSION}`;
 const HTML_CACHE = `learninghub-html-${VERSION}`;
 const RUNTIME_CACHE = `learninghub-runtime-${VERSION}`;
@@ -34,10 +34,18 @@ self.addEventListener('fetch', event => {
   if (req.method !== 'GET') return;
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
+
   if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
     event.respondWith(networkFirst(req));
     return;
   }
+
+  // Never let the service worker trap its own update script in an old cache.
+  if (url.pathname.endsWith('/service-worker.js')) {
+    event.respondWith(fetch(req, { cache: 'no-store' }));
+    return;
+  }
+
   event.respondWith(cacheFirst(req));
 });
 
@@ -59,7 +67,7 @@ async function cacheFirst(req) {
 
 async function networkFirst(req) {
   try {
-    const response = await fetch(req);
+    const response = await fetch(req, { cache: 'no-store' });
     if (response?.status === 200) {
       const cache = await caches.open(HTML_CACHE);
       cache.put(req, response.clone());
