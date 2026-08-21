@@ -1,15 +1,16 @@
 /* ============================================
    Service Worker — LearningHub
-   V2.3.2
+   V2.4.0
    ============================================ */
-const VERSION = 'v2.3.2';
+const VERSION = 'v2.4.0';
 const STATIC_CACHE = `learninghub-static-${VERSION}`;
 const HTML_CACHE = `learninghub-html-${VERSION}`;
 const RUNTIME_CACHE = `learninghub-runtime-${VERSION}`;
 
 const STATIC_ASSETS = [
-  './', './index.html', './auth.html', './offline.html', './manifest.json',
-  './css/hub.css', './css/auth.css', './js/hub.js', './js/activity.js', './js/auth.js', './js/supabase.js',
+  './', './index.html', './auth.html', './my-learning.html', './offline.html', './manifest.json',
+  './css/hub.css', './css/auth.css', './css/ui-cleanup.css',
+  './js/hub.js', './js/activity.js', './js/auth.js', './js/my-learning.js', './js/supabase.js',
   './assets/favicon.svg', './assets/logo.svg', './assets/logo-icon.svg',
   './assets/icons/icon-192.svg', './assets/icons/icon-512.svg', './assets/illustrations/hero.svg'
 ];
