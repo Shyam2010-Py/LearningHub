@@ -1,15 +1,15 @@
 /* ============================================
    Service Worker — LearningHub
-   V2.3.1
+   V2.3.2
    ============================================ */
-const VERSION = 'v2.3.1';
+const VERSION = 'v2.3.2';
 const STATIC_CACHE = `learninghub-static-${VERSION}`;
 const HTML_CACHE = `learninghub-html-${VERSION}`;
 const RUNTIME_CACHE = `learninghub-runtime-${VERSION}`;
 
 const STATIC_ASSETS = [
   './', './index.html', './auth.html', './offline.html', './manifest.json',
-  './css/hub.css', './css/auth.css', './js/hub.js', './js/auth.js', './js/supabase.js',
+  './css/hub.css', './css/auth.css', './js/hub.js', './js/activity.js', './js/auth.js', './js/supabase.js',
   './assets/favicon.svg', './assets/logo.svg', './assets/logo-icon.svg',
   './assets/icons/icon-192.svg', './assets/icons/icon-512.svg', './assets/illustrations/hero.svg'
 ];
@@ -35,14 +35,13 @@ self.addEventListener('fetch', event => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
-    event.respondWith(networkFirst(req));
+  if (url.pathname.endsWith('/service-worker.js')) {
+    event.respondWith(fetch(req, { cache: 'no-store' }));
     return;
   }
 
-  // Never let the service worker trap its own update script in an old cache.
-  if (url.pathname.endsWith('/service-worker.js')) {
-    event.respondWith(fetch(req, { cache: 'no-store' }));
+  if (req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html')) {
+    event.respondWith(networkFirst(req));
     return;
   }
 
