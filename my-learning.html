@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#070B16">
+  <meta name="description" content="Your LearningHub progress, activity and learning history.">
+  <title>My Learning · LearningHub</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/hub.css">
+  <link rel="stylesheet" href="css/ui-cleanup.css">
+  <style>
+    .learning-page{padding:52px 0 80px}.learning-hero{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:30px}.learning-hero h1{margin:6px 0 8px}.learning-hero p{margin:0;color:var(--muted)}.dashboard-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}.stat-card,.learning-panel{border:1px solid var(--line);background:var(--panel);border-radius:20px;padding:20px}.stat-card small{color:var(--muted);display:block}.stat-card strong{display:block;font-size:2rem;margin-top:7px}.learning-panel{margin-top:16px}.learning-panel h2{font-size:1.1rem;margin:0 0 16px}.progress-row{display:grid;grid-template-columns:minmax(140px,1fr) 80px;gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}.progress-row:first-of-type{border-top:0}.progress-row small{color:var(--muted)}.bar{height:7px;background:#233149;border-radius:99px;overflow:hidden;margin-top:7px}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .8s ease}.progress-value{text-align:right;font-weight:700}.activity-row{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-top:1px solid var(--line)}.activity-row:first-of-type{border-top:0}.activity-row small{display:block;color:var(--muted);margin-top:4px}.empty{color:var(--muted)}.back{display:inline-flex;margin-bottom:25px;color:var(--muted);text-decoration:none}.back:hover{color:var(--text)}
+    @media(max-width:800px){.dashboard-grid{grid-template-columns:1fr 1fr}.learning-hero{align-items:flex-start;flex-direction:column}}
+    @media(max-width:560px){.dashboard-grid{grid-template-columns:1fr}.learning-page{padding-top:30px}.stat-card strong{font-size:1.7rem}}
+  </style>
+</head>
+<body>
+<header class="navbar"><div class="wrap nav-inner"><a class="brand" href="./"><img src="assets/logo-icon.svg" alt="" width="44" height="44"><span>LearningHub</span></a><a class="nav-auth-link" href="./">Home</a></div></header>
+<main class="learning-page"><div class="wrap">
+  <a class="back" href="./">← Back to LearningHub</a>
+  <div class="learning-hero"><div><span class="eyebrow">PERSONAL WORKSPACE</span><h1>My Learning</h1><p>Your progress and activity, stored securely for your account.</p></div></div>
+  <div id="authNotice" class="learning-panel" hidden></div>
+  <div id="dashboard" hidden>
+    <div class="dashboard-grid"><div class="stat-card"><small>Average progress</small><strong id="averageProgress">0%</strong></div><div class="stat-card"><small>Projects visited</small><strong id="visitCount">0</strong></div><div class="stat-card"><small>Tracked projects</small><strong id="trackedCount">0</strong></div></div>
+    <section class="learning-panel"><h2>Project progress</h2><div id="progressList"></div></section>
+    <section class="learning-panel"><h2>Recent activity</h2><div id="activityList"></div></section>
+  </div>
+</div></main>
+<script src="js/my-learning.js" type="module"></script>
+</body>
+</html>
