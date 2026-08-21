@@ -1,0 +1,16 @@
+/* LearningHub — UI cleanup
+   Keep account/progress data functionality intact while keeping
+   the homepage visually identical to the original LearningHub shell. */
+
+/* Progress is stored in Supabase; the manual editor is intentionally hidden
+   from the public homepage. */
+.progress-edit,
+.progress-picker {
+  display: none !important;
+}
+
+/* Keep the signed-in profile chip, but remove the homepage logout control. */
+.nav-profile > button.nav-auth-link,
+.mobile-auth-button {
+  display: none !important;
+}
